@@ -6,20 +6,18 @@ class EntryWidget(tk.Frame):
     def __init__(self, parent, label, default=""):
         tk.Frame.__init__(self, parent)
 
-        self.grid_label = tk.Frame(self)
-        self.grid_entry = tk.Frame(self)
+        self.entry_frame = tk.Frame(
+            self, width=1000, bg="green")
+        self.entry_frame.grid(row=1, column=2)
 
-        self.grid_label.grid(row=1, column=1)
-        self.grid_entry.grid(row=1, column=2)
-
-        self.label = tk.Label(self.grid_label, text=label, anchor="w")
-        self.entry = tk.Entry(self.grid_entry)
+        self.label = tk.Label(self.entry_frame, text=label, anchor="w")
+        self.entry = tk.Entry(self.entry_frame)
         self.entry.insert(0, default)
 
         # self.label.pack(side="top", fill="x")
         # self.entry.pack(side="bottom", fill="x", padx=4)
-        self.label.grid(row=1, column=1, sticky="W")
-        self.entry.grid(row=1, column=2, sticky="E")
+        self.label.grid(row=1, column=1, sticky="NSEW")
+        self.entry.grid(row=1, column=2)
 
     def get(self):
         return self.entry.get()
@@ -57,21 +55,17 @@ class DirectoryWidget(tk.Frame):
         self.filename = ""
 
         self.frame = tk.Frame(self)
-        self.frame.grid(row=0, column=3)
-
-        self.label = tk.Label(self.frame)
-        self.label["text"] = label
-
-        self.button = tk.Button(
-            self.frame, text="Browse folders", command=self.browse_folders
-        )
+        self.frame.grid(row=2, column=1)
 
         self.filename_display = tk.Label(self.frame)
         self.filename_display["text"] = self.filename
 
-        self.filename_display.grid(row=0, column=1)
-        self.button.grid(row=0, column=2)
-        self.label.grid(row=0, column=3)
+        self.button = tk.Button(
+            self.frame, text=label, command=self.browse_folders
+        )
+
+        self.button.grid(row=1, column=1)
+        self.filename_display.grid(row=2, column=1)
 
     def get(self):
         return self.filename
@@ -85,4 +79,4 @@ class DirectoryWidget(tk.Frame):
             initialdir="./", title="Select image directory")
 
         self.filename = folder
-        self.label["text"] = folder
+        self.filename_display["text"] = folder

@@ -17,9 +17,16 @@ def validate(folder_path):
 
     files = os.listdir(folder_path)
 
+    if len(files) == 0:
+        raise FileNotFoundError("Selected folder has no files in it")
+
     # Anything after a '.' is matched, e.g. abc.png -> .png
     for file in files:
-        extension = re.search(r"\.(.*)", file).group()
+        extension = re.search(r"\.(.*)", file)
+        if extension is None:
+            raise FileNotFoundError(
+                "Selected folder has no files with extensions")
+        extension = extension.group()
 
         if check_extension == "":
             check_extension = extension
